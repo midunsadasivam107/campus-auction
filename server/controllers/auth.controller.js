@@ -81,12 +81,12 @@ const sendOtp = asyncHandler(async (req, res) => {
 });
 
 /**
- * @desc    Register a new student with OTP verification
+ * @desc    Register a new student
  * @route   POST /api/auth/register
  * @access  Public
  */
 const register = asyncHandler(async (req, res) => {
-  const { name, email, password, studentId, graduationYear, otp } = req.body;
+  const { name, email, password, studentId, graduationYear } = req.body;
   const normalizedEmail = email.trim().toLowerCase();
 
   // Check if email already in use
@@ -94,36 +94,6 @@ const register = asyncHandler(async (req, res) => {
   if (existing) {
     throw ApiError.badRequest('A student with this email is already registered');
   }
-
-  // Verify OTP
-  if (!otp) {
-    throw ApiError.badRequest('Email verification code is required');
-  }
-
-  const otpRecord = await Otp.findOne({ email: normalizedEmail }).sort({ createdAt: -1 });
-  if (!otpRecord) {
-    throw ApiError.badRequest('Verification code has expired or was not requested. Please click "Resend Code".');
-  }
-
-  if (new Date() > otpRecord.expiresAt) {
-    await Otp.deleteOne({ _id: otpRecord._id });
-    throw ApiError.badRequest('Verification code has expired. Please request a new code.');
-  }
-
-  if (otpRecord.attempts >= 5) {
-    await Otp.deleteOne({ _id: otpRecord._id });
-    throw ApiError.badRequest('Too many failed attempts. Please request a new verification code.');
-  }
-
-  const isMatch = otpRecord.otp === otp.trim() || otp.trim() === '123456';
-  if (!isMatch) {
-    otpRecord.attempts += 1;
-    await otpRecord.save();
-    throw ApiError.badRequest('Invalid verification code. Please check your email and try again.');
-  }
-
-  // OTP verified successfully — delete to prevent replay attacks
-  await Otp.deleteOne({ _id: otpRecord._id });
 
   const user = await User.create({
     name,
