@@ -4,6 +4,7 @@ const Bid = require('./Bid');
 const Question = require('./Question');
 const Notification = require('./Notification');
 const AutoBid = require('./AutoBid');
+const SavedSearch = require('./SavedSearch');
 
 module.exports = {
   User,
@@ -12,4 +13,5 @@ module.exports = {
   Question,
   Notification,
   AutoBid,
+  SavedSearch,
 };

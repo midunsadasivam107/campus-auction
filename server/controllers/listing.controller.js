@@ -3,6 +3,7 @@ const ApiError = require('../utils/ApiError');
 const asyncHandler = require('../utils/asyncHandler');
 const { LISTING_STATUS } = require('../utils/constants');
 const { uploadToCloudinary } = require('../middleware/upload');
+const { matchSavedSearches } = require('../services/search.service');
 
 /**
  * @desc    Upload images for a listing
@@ -67,6 +68,12 @@ const createListing = asyncHandler(async (req, res) => {
   const populated = await Listing.findById(listing._id).populate(
     'seller',
     'name email studentId graduationYear avatarUrl'
+  );
+
+  // Match against saved searches in background
+  const io = req.app.get('io');
+  matchSavedSearches(listing, io).catch((err) =>
+    console.error('Error in matchSavedSearches:', err.message)
   );
 
   res.status(201).json({
