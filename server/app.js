@@ -40,7 +40,7 @@ app.use('/api/bids', require('./routes/bid.routes'));
 app.use('/api/questions', require('./routes/question.routes'));
 app.use('/api/notifications', require('./routes/notification.routes'));
 app.use('/api/saved-searches', require('./routes/search.routes'));
-// app.use('/api/ai', require('./routes/ai.routes'));
+app.use('/api/ai', require('./routes/ai.routes'));
 
 // --------------- 404 Handler ---------------
 app.use('/api/*', (req, res, next) => {

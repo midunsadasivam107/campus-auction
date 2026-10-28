@@ -16,6 +16,7 @@ import SellerDashboardPage from './pages/SellerDashboardPage';
 import BuyerDashboardPage from './pages/BuyerDashboardPage';
 import NotificationsPage from './pages/NotificationsPage';
 import SavedSearchesPage from './pages/SavedSearchesPage';
+import AIAssistantPage from './pages/AIAssistantPage';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
                   <Route path="/dashboard/buying" element={<BuyerDashboardPage />} />
                   <Route path="/notifications" element={<NotificationsPage />} />
                   <Route path="/saved-searches" element={<SavedSearchesPage />} />
+                  <Route path="/ai" element={<AIAssistantPage />} />
                 </Routes>
               </main>
               <footer className="bg-white border-t border-slate-200 py-6 text-center text-sm text-slate-500">
