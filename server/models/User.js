@@ -49,9 +49,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// Index for email lookup
-userSchema.index({ email: 1 });
-
 /**
  * Hash password before saving.
  */

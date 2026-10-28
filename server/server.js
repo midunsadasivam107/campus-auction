@@ -1,7 +1,7 @@
+const { PORT, NODE_ENV } = require('./config/env');
 const http = require('http');
 const app = require('./app');
 const connectDB = require('./config/db');
-const { PORT, NODE_ENV } = require('./config/env');
 const { initSocket } = require('./socket');
 const { startAuctionCloser } = require('./jobs/auctionCloser');
 
