@@ -136,10 +136,10 @@ const seedData = async () => {
     // Add a sample Q&A question to the first listing
     await Question.create({
       listing: createdListings[0]._id,
-      buyer: priya._id,
-      questionText: 'Does this calculator include the USB mini charging cable and slide cover?',
-      answerText: 'Yes, original cable and black slide cover are included!',
-      isAnswered: true,
+      asker: priya._id,
+      question: 'Does this calculator include the USB mini charging cable and slide cover?',
+      answer: 'Yes, original cable and black slide cover are included!',
+      answeredBy: rahul._id,
       answeredAt: new Date(),
     });
     console.log('✅ Added sample Q&A thread.');

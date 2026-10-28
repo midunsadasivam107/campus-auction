@@ -47,6 +47,6 @@ const questionSchema = new mongoose.Schema(
 questionSchema.index({ listing: 1, createdAt: -1 });
 questionSchema.index({ asker: 1, createdAt: -1 });
 
-const Question = mongoose.model('Question', questionSchema);
+const Question = mongoose.model('Question', questionSchema, 'questions');
 
 module.exports = Question;

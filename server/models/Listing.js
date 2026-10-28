@@ -132,6 +132,6 @@ listingSchema.pre('save', function (next) {
   next();
 });
 
-const Listing = mongoose.model('Listing', listingSchema);
+const Listing = mongoose.model('Listing', listingSchema, 'listings');
 
 module.exports = Listing;
