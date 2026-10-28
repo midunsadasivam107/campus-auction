@@ -1,10 +1,12 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Listing = require('../models/Listing');
 const Otp = require('../models/Otp');
 const ApiError = require('../utils/ApiError');
 const asyncHandler = require('../utils/asyncHandler');
 const { JWT_SECRET, JWT_EXPIRES_IN, NODE_ENV } = require('../config/env');
 const { sendOtpEmail } = require('../services/email.service');
+const { LISTING_STATUS } = require('../utils/constants');
 
 /**
  * Generate JWT and send cookie
@@ -187,6 +189,49 @@ const updateProfile = asyncHandler(async (req, res) => {
   });
 });
 
+/**
+ * @desc    Get public student profile by ID with selling stats
+ * @route   GET /api/auth/profile/:id
+ * @access  Public
+ */
+const getPublicProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    throw ApiError.notFound('Student profile not found');
+  }
+
+  // Get active listings and selling stats
+  const [activeListings, totalListings, soldListings] = await Promise.all([
+    Listing.find({ seller: user._id, status: LISTING_STATUS.ACTIVE })
+      .select('title category startingPrice currentPrice closingTime images bidCount')
+      .sort({ closingTime: 1 })
+      .limit(6)
+      .lean(),
+    Listing.countDocuments({ seller: user._id }),
+    Listing.countDocuments({ seller: user._id, status: { $in: ['sold', 'completed'] } }),
+  ]);
+
+  res.status(200).json({
+    status: 'success',
+    user: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      studentId: user.studentId,
+      graduationYear: user.graduationYear,
+      bio: user.bio,
+      avatarUrl: user.avatarUrl,
+      createdAt: user.createdAt,
+    },
+    stats: {
+      totalListings,
+      activeListingsCount: activeListings.length,
+      soldListings,
+    },
+    activeListings,
+  });
+});
+
 module.exports = {
   sendOtp,
   register,
@@ -194,4 +239,5 @@ module.exports = {
   logout,
   getMe,
   updateProfile,
+  getPublicProfile,
 };

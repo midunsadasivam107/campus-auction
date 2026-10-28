@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import CountdownTimer from '../components/auction/CountdownTimer';
+import StudentProfileModal from '../components/profile/StudentProfileModal';
 import api from '../services/api';
 import toast from 'react-hot-toast';
 import {
@@ -11,6 +12,7 @@ import {
   HiOutlinePlus,
   HiOutlinePencilAlt,
   HiOutlineTrash,
+  HiOutlineUser,
 } from 'react-icons/hi';
 
 function SellerDashboardPage() {
@@ -20,6 +22,7 @@ function SellerDashboardPage() {
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
+  const [selectedStudent, setSelectedStudent] = useState(null);
 
   const fetchMyListings = async () => {
     try {
@@ -185,14 +188,45 @@ function SellerDashboardPage() {
                     ₹{l.currentPrice ?? l.startingPrice}
                   </span>
                   {l.currentWinner && (
-                    <span className="block text-xs text-slate-500">
-                      Winner: {l.currentWinner?.name}
-                    </span>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setSelectedStudent({
+                          user: l.currentWinner,
+                          role: 'Winning Buyer Profile',
+                        })
+                      }
+                      className="mt-1 flex items-center md:justify-end gap-1 text-xs text-red-400 hover:text-red-300 font-semibold group cursor-pointer transition-colors"
+                      title="View winning student profile"
+                    >
+                      <HiOutlineUser className="w-3.5 h-3.5" />
+                      <span>Winner: {l.currentWinner?.name || 'Buyer'}</span>
+                      <span className="text-[10px] text-zinc-400 group-hover:text-red-400 underline ml-0.5">
+                        (View Profile)
+                      </span>
+                    </button>
                   )}
                 </div>
 
                 {/* Status specific actions */}
                 <div className="flex items-center gap-2">
+                  {l.currentWinner && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setSelectedStudent({
+                          user: l.currentWinner,
+                          role: 'Winning Buyer Profile',
+                        })
+                      }
+                      className="px-2.5 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 rounded-lg text-xs font-medium flex items-center gap-1 transition-colors"
+                      title="View buyer profile & verification"
+                    >
+                      <HiOutlineUser className="w-3.5 h-3.5 text-red-400" />
+                      Buyer Profile
+                    </button>
+                  )}
+
                   {(l.status === 'pending_approval' || (l.status === 'closed' && l.bidCount > 0)) && (
                     <>
                       <button
@@ -241,6 +275,15 @@ function SellerDashboardPage() {
           </Link>
         </div>
       )}
+
+      {/* Reusable Student Profile Modal */}
+      <StudentProfileModal
+        isOpen={!!selectedStudent}
+        onClose={() => setSelectedStudent(null)}
+        initialUser={selectedStudent?.user}
+        userId={selectedStudent?.user?._id || selectedStudent?.user?.id}
+        roleLabel={selectedStudent?.role || 'Student Profile'}
+      />
     </div>
   );
 }

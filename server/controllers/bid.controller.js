@@ -118,7 +118,11 @@ const getMyBids = asyncHandler(async (req, res) => {
     .sort({ createdAt: -1 })
     .populate({
       path: 'listing',
-      select: 'title category currentPrice closingTime status images currentWinner startingPrice',
+      select: 'title category currentPrice closingTime status images currentWinner startingPrice seller',
+      populate: {
+        path: 'seller',
+        select: 'name email studentId graduationYear bio avatarUrl createdAt',
+      },
     })
     .lean();
 

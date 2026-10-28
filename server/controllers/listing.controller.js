@@ -193,7 +193,7 @@ const getListings = asyncHandler(async (req, res) => {
 const getListingById = asyncHandler(async (req, res) => {
   const listing = await Listing.findById(req.params.id)
     .populate('seller', 'name email studentId graduationYear bio avatarUrl createdAt')
-    .populate('currentWinner', 'name studentId graduationYear avatarUrl');
+    .populate('currentWinner', 'name email studentId graduationYear bio avatarUrl createdAt');
 
   if (!listing) {
     throw ApiError.notFound('Auction listing not found');
@@ -473,7 +473,7 @@ const reportFailedPickup = asyncHandler(async (req, res) => {
 const getMySellingListings = asyncHandler(async (req, res) => {
   const listings = await Listing.find({ seller: req.user._id })
     .sort({ createdAt: -1 })
-    .populate('currentWinner', 'name studentId email')
+    .populate('currentWinner', 'name email studentId graduationYear bio avatarUrl createdAt')
     .lean();
 
   res.status(200).json({

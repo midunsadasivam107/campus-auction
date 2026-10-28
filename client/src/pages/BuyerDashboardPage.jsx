@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import CountdownTimer from '../components/auction/CountdownTimer';
+import StudentProfileModal from '../components/profile/StudentProfileModal';
 import api from '../services/api';
 import toast from 'react-hot-toast';
 import {
@@ -9,6 +10,7 @@ import {
   HiOutlineCheckCircle,
   HiOutlineArrowNarrowRight,
   HiOutlineExclamation,
+  HiOutlineUser,
 } from 'react-icons/hi';
 
 function BuyerDashboardPage() {
@@ -17,6 +19,7 @@ function BuyerDashboardPage() {
 
   const [bids, setBids] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedSeller, setSelectedSeller] = useState(null);
 
   const fetchMyBids = async () => {
     try {
@@ -144,11 +147,25 @@ function BuyerDashboardPage() {
                     <p className="text-xs text-slate-400 mt-0.5">
                       You placed {myBidsCount} {myBidsCount === 1 ? 'bid' : 'bids'} • Your highest bid: ₹{myHighestBid}
                     </p>
+                    {listing.seller && (
+                      <button
+                        type="button"
+                        onClick={() => setSelectedSeller(listing.seller)}
+                        className="mt-1 flex items-center gap-1 text-xs text-red-400 hover:text-red-300 font-semibold group cursor-pointer transition-colors"
+                        title="View seller profile and student credentials"
+                      >
+                        <HiOutlineUser className="w-3.5 h-3.5" />
+                        <span>Seller: {listing.seller.name || 'Campus Student'}</span>
+                        <span className="text-[10px] text-zinc-400 group-hover:text-red-400 underline ml-0.5">
+                          (View Profile)
+                        </span>
+                      </button>
+                    )}
                   </div>
                 </div>
 
                 {/* Right price & action */}
-                <div className="flex flex-wrap items-center gap-5 border-t md:border-t-0 pt-3 md:pt-0 justify-between md:justify-end">
+                <div className="flex flex-wrap items-center gap-3 border-t md:border-t-0 pt-3 md:pt-0 justify-between md:justify-end">
                   <div className="text-left md:text-right">
                     <span className="text-xs text-slate-400 block uppercase font-medium">
                       Current Price
@@ -157,6 +174,18 @@ function BuyerDashboardPage() {
                       ₹{listing.currentPrice ?? listing.startingPrice}
                     </span>
                   </div>
+
+                  {listing.seller && (
+                    <button
+                      type="button"
+                      onClick={() => setSelectedSeller(listing.seller)}
+                      className="px-3 py-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                      title="View seller profile"
+                    >
+                      <HiOutlineUser className="w-4 h-4 text-red-400" />
+                      Seller Profile
+                    </button>
+                  )}
 
                   <Link
                     to={`/auction/${listing._id}`}
@@ -187,6 +216,15 @@ function BuyerDashboardPage() {
           </Link>
         </div>
       )}
+
+      {/* Reusable Student Profile Modal */}
+      <StudentProfileModal
+        isOpen={!!selectedSeller}
+        onClose={() => setSelectedSeller(null)}
+        initialUser={selectedSeller}
+        userId={selectedSeller?._id || selectedSeller?.id}
+        roleLabel="Seller Profile"
+      />
     </div>
   );
 }

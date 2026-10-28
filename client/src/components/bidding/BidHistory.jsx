@@ -1,7 +1,7 @@
 import { formatDistanceToNow } from 'date-fns';
 import { HiOutlineUser, HiOutlineCheckCircle } from 'react-icons/hi';
 
-function BidHistory({ bids = [], currentWinnerId, currentUserId }) {
+function BidHistory({ bids = [], currentWinnerId, currentUserId, onSelectBidder }) {
   if (!bids || bids.length === 0) {
     return (
       <div className="py-8 text-center text-slate-400 text-sm">
@@ -41,9 +41,19 @@ function BidHistory({ bids = [], currentWinnerId, currentUserId }) {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold text-slate-800">
-                      {bid.bidder?.name || 'Student'}
-                    </span>
+                    {onSelectBidder && (bid.bidder?._id || bid.bidder?.id) ? (
+                      <button
+                        onClick={() => onSelectBidder(bid.bidder)}
+                        className="font-semibold text-slate-800 hover:text-red-400 hover:underline transition-colors text-left"
+                        title="View student profile"
+                      >
+                        {bid.bidder?.name || 'Student'}
+                      </button>
+                    ) : (
+                      <span className="font-semibold text-slate-800">
+                        {bid.bidder?.name || 'Student'}
+                      </span>
+                    )}
                     {isMyBid && (
                       <span className="text-[10px] font-bold uppercase bg-primary-100 text-primary-700 px-1.5 py-0.2 rounded">
                         You

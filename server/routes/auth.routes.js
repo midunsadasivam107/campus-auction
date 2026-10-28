@@ -8,6 +8,7 @@ const {
   logout,
   getMe,
   updateProfile,
+  getPublicProfile,
 } = require('../controllers/auth.controller');
 const { authenticate } = require('../middleware/auth');
 const validate = require('../middleware/validate');
@@ -24,6 +25,7 @@ router.post('/send-otp', authLimiter, validate(sendOtpSchema), sendOtp);
 router.post('/register', authLimiter, validate(registerSchema), register);
 router.post('/login', authLimiter, validate(loginSchema), login);
 router.post('/logout', logout);
+router.get('/profile/:id', getPublicProfile);
 
 // Protected routes
 router.get('/me', authenticate, getMe);
