@@ -6,6 +6,9 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
+import CreateListingPage from './pages/CreateListingPage';
+import EditListingPage from './pages/EditListingPage';
+import AuctionDetailPage from './pages/AuctionDetailPage';
 
 function App() {
   return (
@@ -19,6 +22,9 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/sell" element={<CreateListingPage />} />
+              <Route path="/auction/:id" element={<AuctionDetailPage />} />
+              <Route path="/auction/:id/edit" element={<EditListingPage />} />
             </Routes>
           </main>
           <footer className="bg-white border-t border-slate-200 py-6 text-center text-sm text-slate-500">
