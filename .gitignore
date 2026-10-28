@@ -36,3 +36,6 @@ tmp/
 
 # Uploads (local dev)
 uploads/
+
+# Local MongoDB data
+mongodb-data/
