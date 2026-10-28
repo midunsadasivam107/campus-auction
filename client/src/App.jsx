@@ -11,6 +11,8 @@ import CreateListingPage from './pages/CreateListingPage';
 import EditListingPage from './pages/EditListingPage';
 import AuctionDetailPage from './pages/AuctionDetailPage';
 import SearchResultsPage from './pages/SearchResultsPage';
+import SellerDashboardPage from './pages/SellerDashboardPage';
+import BuyerDashboardPage from './pages/BuyerDashboardPage';
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
                 <Route path="/sell" element={<CreateListingPage />} />
                 <Route path="/auction/:id" element={<AuctionDetailPage />} />
                 <Route path="/auction/:id/edit" element={<EditListingPage />} />
+                <Route path="/dashboard/selling" element={<SellerDashboardPage />} />
+                <Route path="/dashboard/buying" element={<BuyerDashboardPage />} />
               </Routes>
             </main>
             <footer className="bg-white border-t border-slate-200 py-6 text-center text-sm text-slate-500">
