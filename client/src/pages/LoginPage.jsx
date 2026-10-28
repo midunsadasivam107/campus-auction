@@ -101,6 +101,32 @@ function LoginPage() {
           </button>
         </form>
 
+        <div className="mt-5 pt-4 border-t border-slate-100">
+          <p className="text-xs text-slate-500 mb-2 font-medium">Demo Accounts (click to fill):</p>
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <button
+              type="button"
+              onClick={() => {
+                setEmail('rahul@campus.edu');
+                setPassword('Password123!');
+              }}
+              className="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-left transition-colors font-medium"
+            >
+              👤 Rahul (Seller)
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setEmail('priya@campus.edu');
+                setPassword('Password123!');
+              }}
+              className="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-left transition-colors font-medium"
+            >
+              👤 Priya (Buyer)
+            </button>
+          </div>
+        </div>
+
         <p className="text-center text-sm text-slate-500 mt-6">
           Don't have an account yet?{' '}
           <Link
