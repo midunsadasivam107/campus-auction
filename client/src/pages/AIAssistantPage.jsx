@@ -77,27 +77,27 @@ function AIAssistantPage() {
   return (
     <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 flex flex-col h-[calc(100vh-8rem)]">
       {/* Header */}
-      <div className="pb-4 border-b border-slate-200 flex items-center justify-between">
+      <div className="pb-4 border-b border-zinc-800 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center text-xl shadow-xs">
+          <div className="w-10 h-10 rounded-xl bg-red-600 text-white flex items-center justify-center text-xl shadow-xs">
             <HiOutlineSparkles className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <h1 className="text-xl font-bold text-white flex items-center gap-2">
               AI Campus Assistant
-              <span className="text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-purple-700 px-2 py-0.5 rounded">
+              <span className="text-[10px] font-bold uppercase tracking-wider bg-red-950/80 text-red-400 border border-red-800/60 px-2 py-0.5 rounded">
                 Beta
               </span>
             </h1>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-zinc-400">
               Natural language search, item discovery & auction rule guide
             </p>
           </div>
         </div>
 
         {user?.spendingLimit && (
-          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-green-50 border border-green-200 rounded-lg text-xs font-semibold text-green-700">
-            <HiOutlineShieldCheck className="w-4 h-4 text-green-600" />
+          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-emerald-950/70 border border-emerald-800/60 rounded-lg text-xs font-semibold text-emerald-400">
+            <HiOutlineShieldCheck className="w-4 h-4 text-emerald-400" />
             <span>Guardrail: ₹{user.spendingLimit} limit</span>
           </div>
         )}
@@ -163,10 +163,10 @@ function AIAssistantPage() {
         ))}
 
         {loading && (
-          <div className="flex items-center gap-2 p-3 bg-white border border-slate-200 rounded-2xl w-fit shadow-2xs text-xs text-slate-500">
-            <span className="w-2 h-2 rounded-full bg-purple-600 animate-bounce" />
-            <span className="w-2 h-2 rounded-full bg-purple-600 animate-bounce delay-100" />
-            <span className="w-2 h-2 rounded-full bg-purple-600 animate-bounce delay-200" />
+          <div className="flex items-center gap-2 p-3 bg-zinc-900 border border-zinc-800 rounded-2xl w-fit shadow-2xs text-xs text-zinc-400">
+            <span className="w-2 h-2 rounded-full bg-red-600 animate-bounce" />
+            <span className="w-2 h-2 rounded-full bg-red-600 animate-bounce delay-100" />
+            <span className="w-2 h-2 rounded-full bg-red-600 animate-bounce delay-200" />
             <span className="ml-1 font-medium">Searching campus listings...</span>
           </div>
         )}
@@ -180,7 +180,7 @@ function AIAssistantPage() {
           <button
             key={i}
             onClick={() => handleSend(s)}
-            className="text-xs bg-white hover:bg-purple-50 text-slate-600 hover:text-purple-700 px-3 py-1.5 rounded-full border border-slate-200 transition-colors whitespace-nowrap shadow-2xs font-medium"
+            className="text-xs bg-zinc-900 hover:bg-red-950/50 text-zinc-300 hover:text-red-400 px-3 py-1.5 rounded-full border border-zinc-800 hover:border-red-800/60 transition-colors whitespace-nowrap shadow-2xs font-medium"
           >
             {s}
           </button>
@@ -200,12 +200,12 @@ function AIAssistantPage() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask me: 'Find a bicycle under ₹2000' or 'How does anti-sniping work?'"
-          className="flex-1 px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm shadow-xs"
+          className="flex-1 px-4 py-3 bg-zinc-900 border border-zinc-700/80 rounded-xl text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 text-sm shadow-xs"
         />
         <button
           type="submit"
           disabled={loading || !input.trim()}
-          className="px-5 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl text-sm shadow-xs transition-colors disabled:opacity-50 flex items-center justify-center"
+          className="px-5 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl text-sm shadow-xs transition-colors disabled:opacity-50 flex items-center justify-center"
         >
           <HiOutlinePaperAirplane className="w-5 h-5 rotate-90" />
         </button>

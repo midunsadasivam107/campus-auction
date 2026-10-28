@@ -48,10 +48,10 @@ function AuctionCard({ listing }) {
 
         {/* Badges on image */}
         <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5">
-          <span className="text-[11px] font-semibold bg-white/95 text-slate-800 px-2 py-0.5 rounded-md shadow-xs capitalize">
+          <span className="text-[11px] font-semibold bg-black/85 text-zinc-200 border border-zinc-700/60 px-2 py-0.5 rounded-md shadow-xs capitalize">
             {listing.category}
           </span>
-          <span className="text-[11px] font-medium bg-slate-900/80 text-white px-2 py-0.5 rounded-md shadow-xs">
+          <span className="text-[11px] font-medium bg-red-950/85 text-red-300 border border-red-900/60 px-2 py-0.5 rounded-md shadow-xs">
             {formatCondition(listing.condition)}
           </span>
         </div>
@@ -59,7 +59,7 @@ function AuctionCard({ listing }) {
         {/* Live status badge */}
         <div className="absolute bottom-2.5 right-2.5">
           {isClosed ? (
-            <span className="text-xs font-semibold bg-slate-800 text-white px-2.5 py-0.5 rounded-md shadow-xs">
+            <span className="text-xs font-semibold bg-zinc-900/90 text-zinc-400 border border-zinc-700 px-2.5 py-0.5 rounded-md shadow-xs">
               Closed
             </span>
           ) : (
@@ -73,35 +73,35 @@ function AuctionCard({ listing }) {
         <div>
           <Link
             to={`/auction/${listing._id || listing.id}`}
-            className="block text-slate-900 font-semibold hover:text-primary-600 transition-colors line-clamp-1 text-base"
+            className="block text-white font-semibold hover:text-red-500 transition-colors line-clamp-1 text-base"
             title={listing.title}
           >
             {listing.title}
           </Link>
-          <p className="text-xs text-slate-500 mt-1 line-clamp-2">
+          <p className="text-xs text-zinc-400 mt-1 line-clamp-2">
             {listing.description}
           </p>
         </div>
 
         {/* Price & Bids */}
-        <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+        <div className="mt-4 pt-3 border-t border-zinc-800 flex items-center justify-between">
           <div>
-            <p className="text-[11px] text-slate-400 uppercase font-medium tracking-wider">
+            <p className="text-[11px] text-zinc-500 uppercase font-medium tracking-wider">
               {listing.bidCount > 0 ? 'Current Bid' : 'Starting Price'}
             </p>
-            <p className="text-lg font-bold text-slate-900">
+            <p className="text-lg font-bold text-red-500">
               ₹{listing.currentPrice ?? listing.startingPrice}
             </p>
           </div>
 
           <div className="text-right">
-            <span className="inline-flex items-center gap-1 text-xs text-slate-500 font-medium">
-              <HiOutlineTag className="w-3.5 h-3.5" />
+            <span className="inline-flex items-center gap-1 text-xs text-zinc-400 font-medium">
+              <HiOutlineTag className="w-3.5 h-3.5 text-red-500" />
               {listing.bidCount || 0} {listing.bidCount === 1 ? 'bid' : 'bids'}
             </span>
             <Link
               to={`/auction/${listing._id || listing.id}`}
-              className="block mt-1 text-xs font-semibold text-primary-600 hover:text-primary-700"
+              className="block mt-1 text-xs font-semibold text-red-500 hover:text-red-400"
             >
               View Auction →
             </Link>

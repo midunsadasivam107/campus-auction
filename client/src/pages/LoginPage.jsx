@@ -102,7 +102,7 @@ function LoginPage() {
         </form>
 
         <div className="mt-5 pt-4 border-t border-slate-100">
-          <p className="text-xs text-slate-500 mb-2 font-medium">Demo Accounts (click to fill):</p>
+          <p className="text-xs text-zinc-400 mb-2 font-medium">Demo Accounts (click to fill):</p>
           <div className="grid grid-cols-2 gap-2 text-xs">
             <button
               type="button"
@@ -110,7 +110,7 @@ function LoginPage() {
                 setEmail('rahul@campus.edu');
                 setPassword('Password123!');
               }}
-              className="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-left transition-colors font-medium"
+              className="py-1.5 px-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 hover:border-red-600/50 rounded text-left transition-colors font-medium"
             >
               👤 Rahul (Seller)
             </button>
@@ -120,7 +120,7 @@ function LoginPage() {
                 setEmail('priya@campus.edu');
                 setPassword('Password123!');
               }}
-              className="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-left transition-colors font-medium"
+              className="py-1.5 px-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 hover:border-red-600/50 rounded text-left transition-colors font-medium"
             >
               👤 Priya (Buyer)
             </button>

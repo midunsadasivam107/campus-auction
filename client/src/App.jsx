@@ -24,7 +24,7 @@ function App() {
       <AuthProvider>
         <SocketProvider>
           <NotificationProvider>
-            <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
+            <div className="min-h-screen bg-black text-slate-100 flex flex-col">
               <Navbar />
               <main className="flex-1">
                 <Routes>
@@ -43,19 +43,28 @@ function App() {
                   <Route path="/ai" element={<AIAssistantPage />} />
                 </Routes>
               </main>
-              <footer className="bg-white border-t border-slate-200 py-6 text-center text-sm text-slate-500">
+              <footer className="bg-[#0a0a0d] border-t border-zinc-800/80 py-6 text-center text-sm text-zinc-500">
                 <div className="max-w-7xl mx-auto px-4">
-                  <p>
-                    🎓 Campus Auction — Student Marketplace for graduating & junior
+                  <p className="text-zinc-400">
+                    🎓 <span className="text-red-500 font-semibold">Campus Auction</span> — Student Marketplace for graduating & junior
                     students
                   </p>
-                  <p className="text-xs text-slate-400 mt-1">
-                    Built with React, Express, MongoDB & Socket.IO
+                  <p className="text-xs text-zinc-500 mt-1">
+                    Real-time Bidding • Anti-Sniping Protection • Campus Handover
                   </p>
                 </div>
               </footer>
             </div>
-            <Toaster position="top-right" />
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                style: {
+                  background: '#121217',
+                  color: '#ffffff',
+                  border: '1px solid #272730',
+                },
+              }}
+            />
           </NotificationProvider>
         </SocketProvider>
       </AuthProvider>

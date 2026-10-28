@@ -89,9 +89,9 @@ function AutoBidSetup({ listingId, currentPrice, minIncrement, isAuthenticated }
         <button
           type="button"
           onClick={() => setShowConfig(!showConfig)}
-          className="text-xs font-semibold text-purple-700 hover:text-purple-800 flex items-center gap-1.5 focus:outline-none"
+          className="text-xs font-semibold text-red-400 hover:text-red-300 flex items-center gap-1.5 focus:outline-none"
         >
-          <span className="p-1 rounded-md bg-purple-100 text-purple-700">
+          <span className="p-1 rounded-md bg-red-950/80 text-red-400 border border-red-800/60">
             <HiOutlineLightningBolt className="w-3.5 h-3.5" />
           </span>
           {activeAutoBid
@@ -103,7 +103,7 @@ function AutoBidSetup({ listingId, currentPrice, minIncrement, isAuthenticated }
           <button
             type="button"
             onClick={handleCancelAutoBid}
-            className="text-[11px] text-red-500 hover:text-red-700 font-medium flex items-center gap-0.5"
+            className="text-[11px] text-red-500 hover:text-red-400 font-medium flex items-center gap-0.5"
             title="Cancel Auto-Bid"
           >
             <HiOutlineTrash className="w-3.5 h-3.5" /> Cancel
@@ -113,16 +113,16 @@ function AutoBidSetup({ listingId, currentPrice, minIncrement, isAuthenticated }
 
       {/* Config Form */}
       {showConfig && (
-        <div className="mt-3 p-3.5 bg-purple-50/60 border border-purple-200 rounded-xl space-y-3 text-xs text-purple-900">
+        <div className="mt-3 p-3.5 bg-red-950/40 border border-red-900/50 rounded-xl space-y-3 text-xs text-red-200">
           <div className="flex items-start gap-2">
-            <HiOutlineShieldCheck className="w-5 h-5 text-purple-600 shrink-0 mt-0.5" />
+            <HiOutlineShieldCheck className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
             <p className="leading-relaxed">
-              <strong className="font-semibold">How it works:</strong> Set your maximum confirmed bid. Campus Auction will automatically place bids by the minimum increment (+₹{minIncrement}) only as needed to keep you winning. Your max is 100% confidential.
+              <strong className="font-semibold text-white">How it works:</strong> Set your maximum confirmed bid. Campus Auction will automatically place bids by the minimum increment (+₹{minIncrement}) only as needed to keep you winning. Your max is 100% confidential.
             </p>
           </div>
 
           <form onSubmit={handleSetAutoBid} className="space-y-2 pt-1">
-            <label className="block font-semibold">
+            <label className="block font-semibold text-zinc-300">
               Maximum Confirmed Amount (₹)
             </label>
             <div className="flex gap-2">
@@ -134,12 +134,12 @@ function AutoBidSetup({ listingId, currentPrice, minIncrement, isAuthenticated }
                 value={maxAmount}
                 onChange={(e) => setMaxAmount(e.target.value)}
                 placeholder={`e.g. ₹${minSuggested}`}
-                className="w-full px-3 py-1.5 bg-white border border-purple-300 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                className="w-full px-3 py-1.5 bg-zinc-900 border border-zinc-700 rounded-lg text-white font-bold focus:ring-2 focus:ring-red-500 focus:outline-none"
               />
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-4 py-1.5 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-xs whitespace-nowrap disabled:opacity-50"
+                className="px-4 py-1.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow-xs whitespace-nowrap disabled:opacity-50"
               >
                 {submitting ? 'Saving...' : activeAutoBid ? 'Update' : 'Set Auto-Bid'}
               </button>

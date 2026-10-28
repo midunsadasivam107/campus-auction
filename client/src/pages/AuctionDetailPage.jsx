@@ -321,12 +321,12 @@ function AuctionDetailPage() {
                 <span
                   className={`text-xs font-bold uppercase px-2 py-0.5 rounded ${
                     listing.status === 'active'
-                      ? 'bg-green-100 text-green-700'
+                      ? 'bg-red-950/80 text-red-400 border border-red-800/60'
                       : listing.status === 'sold'
-                      ? 'bg-blue-100 text-blue-700'
+                      ? 'bg-emerald-950/80 text-emerald-400 border border-emerald-800/60'
                       : listing.status === 'completed'
-                      ? 'bg-purple-100 text-purple-700'
-                      : 'bg-slate-100 text-slate-700'
+                      ? 'bg-zinc-800 text-zinc-300 border border-zinc-700'
+                      : 'bg-zinc-900 text-zinc-400 border border-zinc-800'
                   }`}
                 >
                   {listing.status?.replace('_', ' ')}
@@ -469,7 +469,7 @@ function AuctionDetailPage() {
                 Seller Information
               </p>
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-lg">
+                <div className="w-12 h-12 rounded-full bg-red-950/80 text-red-400 border border-red-800/60 flex items-center justify-center font-bold text-lg">
                   {listing.seller.name?.charAt(0).toUpperCase()}
                 </div>
                 <div>

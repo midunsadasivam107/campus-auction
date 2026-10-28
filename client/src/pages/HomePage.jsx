@@ -59,22 +59,24 @@ function HomePage() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-accent-600 text-white relative overflow-hidden">
+      <section className="bg-gradient-to-br from-black via-[#0d0404] to-[#1c0505] border-b border-red-950/50 text-white relative overflow-hidden">
         {/* Subtle decorative circles */}
-        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white/5 blur-2xl pointer-events-none" />
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-purple-500/10 blur-2xl pointer-events-none" />
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-red-600/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-rose-600/10 blur-3xl pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative z-10">
           <div className="text-center max-w-3xl mx-auto">
-            <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider bg-white/15 text-white px-3 py-1 rounded-full mb-4">
+            <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider bg-red-950/60 text-red-400 border border-red-800/50 px-3 py-1 rounded-full mb-4">
               🎓 Student-to-Student Marketplace
             </span>
             <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight">
               Graduating? Sell your stuff
               <br />
-              to juniors!
+              <span className="bg-gradient-to-r from-red-400 via-rose-300 to-red-500 bg-clip-text text-transparent">
+                to campus juniors!
+              </span>
             </h1>
-            <p className="mt-4 text-base sm:text-lg text-primary-100 max-w-2xl mx-auto">
+            <p className="mt-4 text-base sm:text-lg text-zinc-300 max-w-2xl mx-auto">
               Real-time auctions with anti-sniping protection, campus handover,
               and AI bidding assistance. Fair deals between campus peers.
             </p>
@@ -82,7 +84,7 @@ function HomePage() {
             {/* Hero Quick Search Bar */}
             <form onSubmit={handleSearchSubmit} className="mt-8 max-w-xl mx-auto">
               <div className="relative flex items-center">
-                <span className="absolute left-4 text-slate-400">
+                <span className="absolute left-4 text-zinc-400">
                   <HiOutlineSearch className="w-5 h-5" />
                 </span>
                 <input
@@ -90,11 +92,11 @@ function HomePage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search bicycles, calculators, textbooks, monitors..."
-                  className="w-full pl-12 pr-28 py-3.5 rounded-xl bg-white text-slate-900 shadow-lg placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-300 text-sm"
+                  className="w-full pl-12 pr-28 py-3.5 rounded-xl bg-zinc-900 border border-zinc-700/80 text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 text-sm shadow-lg"
                 />
                 <button
                   type="submit"
-                  className="absolute right-2 px-5 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg text-sm transition-colors"
+                  className="absolute right-2 px-5 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg text-sm transition-colors shadow-xs"
                 >
                   Search
                 </button>
@@ -104,13 +106,13 @@ function HomePage() {
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <Link
                 to="/search"
-                className="px-6 py-2.5 bg-white text-primary-700 font-semibold rounded-lg shadow-sm hover:bg-primary-50 transition-colors text-sm"
+                className="px-6 py-2.5 bg-red-600 text-white font-semibold rounded-lg shadow-sm hover:bg-red-700 transition-colors text-sm"
               >
                 Browse All Auctions
               </Link>
               <Link
                 to="/sell"
-                className="px-6 py-2.5 bg-primary-800 text-white font-semibold rounded-lg shadow-sm hover:bg-primary-900 border border-primary-500 transition-colors text-sm"
+                className="px-6 py-2.5 bg-zinc-900 text-zinc-100 font-semibold rounded-lg shadow-sm hover:bg-zinc-800 border border-zinc-700 transition-colors text-sm"
               >
                 + List an Item for Sale
               </Link>

@@ -46,13 +46,13 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-xs">
+    <nav className="bg-[#09090c]/90 backdrop-blur-md border-b border-zinc-800 sticky top-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <span className="text-2xl">🎓</span>
-            <span className="text-xl font-bold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
+            <span className="text-xl font-bold bg-gradient-to-r from-red-500 via-rose-500 to-red-600 bg-clip-text text-transparent">
               Campus Auction
             </span>
           </Link>
@@ -61,21 +61,21 @@ function Navbar() {
           <div className="hidden md:flex items-center gap-6">
             <Link
               to="/"
-              className="text-slate-600 hover:text-primary-600 font-medium transition-colors"
+              className="text-zinc-300 hover:text-red-500 font-medium transition-colors"
             >
               Browse
             </Link>
             <Link
               to="/sell"
-              className="text-slate-600 hover:text-primary-600 font-medium transition-colors"
+              className="text-zinc-300 hover:text-red-500 font-medium transition-colors"
             >
               Sell
             </Link>
             <Link
               to="/ai"
-              className="text-slate-600 hover:text-primary-600 font-medium transition-colors flex items-center gap-1"
+              className="text-zinc-300 hover:text-red-500 font-medium transition-colors flex items-center gap-1"
             >
-              <span className="text-xs bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded font-bold">
+              <span className="text-xs bg-red-950/80 text-red-400 border border-red-800/60 px-1.5 py-0.5 rounded font-bold">
                 AI
               </span>
               Assistant

@@ -52,11 +52,11 @@ function CountdownTimer({ targetDate, onEnd, className = '' }) {
   const isUrgent = timeLeft.total <= 60 * 1000; // < 60s
   const isWarning = timeLeft.total <= 10 * 60 * 1000; // < 10m
 
-  let colorClass = 'text-slate-700 bg-slate-100';
+  let colorClass = 'text-zinc-300 bg-zinc-900 border border-zinc-800';
   if (isUrgent) {
-    colorClass = 'text-red-700 bg-red-100 animate-pulse font-bold';
+    colorClass = 'text-red-300 bg-red-950/90 border border-red-600 animate-pulse font-bold';
   } else if (isWarning) {
-    colorClass = 'text-amber-700 bg-amber-100 font-semibold';
+    colorClass = 'text-amber-300 bg-amber-950/70 border border-amber-800/60 font-semibold';
   }
 
   const pad = (n) => String(n).padStart(2, '0');
