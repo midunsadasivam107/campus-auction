@@ -2,14 +2,13 @@ const http = require('http');
 const app = require('./app');
 const connectDB = require('./config/db');
 const { PORT, NODE_ENV } = require('./config/env');
+const { initSocket } = require('./socket');
 
-// Create HTTP server (needed for Socket.IO later)
+// Create HTTP server
 const server = http.createServer(app);
 
-// --------------- Socket.IO Setup (Placeholder) ---------------
-// Will be initialized in the real-time milestone:
-// const { initSocket } = require('./socket');
-// initSocket(server);
+// Initialize Socket.IO
+initSocket(server, app);
 
 // --------------- Start Server ---------------
 const start = async () => {
