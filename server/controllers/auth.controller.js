@@ -71,13 +71,16 @@ const sendOtp = asyncHandler(async (req, res) => {
     expiresAt: new Date(Date.now() + 10 * 60 * 1000),
   });
 
-  // Send email (or log to console in development)
-  const emailResult = await sendOtpEmail(normalizedEmail, otpCode);
+  // Send email to student's inbox
+  try {
+    await sendOtpEmail(normalizedEmail, otpCode);
+  } catch (err) {
+    throw ApiError.badRequest(err.message);
+  }
 
   res.status(200).json({
     status: 'success',
-    message: `Verification code sent to ${normalizedEmail}`,
-    ...(emailResult.dev || NODE_ENV !== 'production' ? { devOtp: otpCode } : {}),
+    message: `Verification code sent to ${normalizedEmail}. Please check your email inbox.`,
   });
 });
 

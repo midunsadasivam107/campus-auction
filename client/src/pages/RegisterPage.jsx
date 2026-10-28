@@ -24,7 +24,6 @@ function RegisterPage() {
     graduationYear: new Date().getFullYear() + 1,
   });
   const [otp, setOtp] = useState('');
-  const [devOtp, setDevOtp] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [sendingOtp, setSendingOtp] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
@@ -78,9 +77,6 @@ function RegisterPage() {
       });
 
       toast.success(res.data.message || 'Verification code sent to your email! ✉️');
-      if (res.data.devOtp) {
-        setDevOtp(res.data.devOtp);
-      }
       setResendCooldown(60);
       setStep(2);
     } catch (err) {
@@ -322,21 +318,9 @@ function RegisterPage() {
               </button>
             </div>
 
-            {/* Dev helper pill */}
-            {devOtp && (
-              <div className="p-3 bg-red-950/50 border border-red-800/60 rounded-xl flex items-center justify-between text-xs">
-                <span className="text-zinc-300">
-                  💡 Dev Code: <strong className="text-red-400 font-mono tracking-wider">{devOtp}</strong>
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setOtp(devOtp)}
-                  className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded font-medium text-[11px]"
-                >
-                  Paste Code
-                </button>
-              </div>
-            )}
+            <div className="p-3 bg-zinc-950/60 border border-zinc-800 rounded-xl text-center text-xs text-zinc-400">
+              <p>📩 Please check your inbox (or spam folder) for the 6-digit code.</p>
+            </div>
 
             <div>
               <label className="block text-sm font-medium text-zinc-300 text-center mb-2">

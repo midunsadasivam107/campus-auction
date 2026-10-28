@@ -5,38 +5,58 @@ const {
   SMTP_USER,
   SMTP_PASS,
   EMAIL_FROM,
-  NODE_ENV,
 } = require('../config/env');
 
-let transporter = null;
+/**
+ * Dynamically create Nodemailer transporter
+ */
+const getTransporter = () => {
+  // Re-read process.env dynamically in case variables were updated without full restart
+  const user = process.env.SMTP_USER || SMTP_USER;
+  const pass = process.env.SMTP_PASS || SMTP_PASS;
+  const host = process.env.SMTP_HOST || SMTP_HOST;
+  const port = parseInt(process.env.SMTP_PORT || SMTP_PORT, 10) || 587;
 
-// Initialize transporter if SMTP credentials are provided
-if (SMTP_HOST && SMTP_USER && SMTP_PASS) {
-  try {
-    transporter = nodemailer.createTransport({
-      host: SMTP_HOST,
-      port: SMTP_PORT,
-      secure: SMTP_PORT === 465,
-      auth: {
-        user: SMTP_USER,
-        pass: SMTP_PASS,
-      },
-    });
-    console.log(`✉️ Email service initialized with host: ${SMTP_HOST}`);
-  } catch (err) {
-    console.warn('⚠️ Failed to initialize email transporter:', err.message);
+  if (!user || !pass) {
+    return null;
   }
-}
+
+  // If host is explicitly specified (e.g. SendGrid, Outlook, custom mail server)
+  if (host && host !== 'smtp.gmail.com') {
+    return nodemailer.createTransport({
+      host,
+      port,
+      secure: port === 465,
+      auth: { user, pass },
+    });
+  }
+
+  // Default: Direct Gmail transport (requires Google App Password)
+  return nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user, pass },
+  });
+};
 
 /**
- * Send OTP verification email
+ * Send OTP verification email to the student's typed email address
  *
  * @param {string} email - Recipient student email
  * @param {string} otp - 6-digit verification code
- * @returns {Promise<{ sent: boolean, dev: boolean }>}
+ * @returns {Promise<void>}
  */
 const sendOtpEmail = async (email, otp) => {
+  const transporter = getTransporter();
+
+  if (!transporter) {
+    throw new Error(
+      'Email service is not configured. Please add SMTP_USER and SMTP_PASS (e.g. your Gmail and 16-character App Password) in server/.env to send OTP emails to actual inboxes.'
+    );
+  }
+
   const subject = `🎓 Your Campus Auction Verification Code: ${otp}`;
+  const fromAddress = process.env.EMAIL_FROM || EMAIL_FROM || `Campus Auction <${process.env.SMTP_USER || SMTP_USER}>`;
+
   const htmlContent = `
     <!DOCTYPE html>
     <html>
@@ -80,36 +100,22 @@ const sendOtpEmail = async (email, otp) => {
     </html>
   `;
 
-  // Always log clearly to console in non-production
-  if (NODE_ENV !== 'production' || !transporter) {
-    console.log('\n────────────────────────────────────────────────────────────');
-    console.log('📨 [CAMPUS AUCTION OTP EMAIL]');
-    console.log(`To      : ${email}`);
-    console.log(`OTP Code: ${otp}`);
-    console.log('Validity: 10 minutes');
-    console.log('────────────────────────────────────────────────────────────\n');
+  try {
+    const info = await transporter.sendMail({
+      from: fromAddress,
+      to: email,
+      subject,
+      html: htmlContent,
+      text: `Your Campus Auction verification code is: ${otp}. Valid for 10 minutes.`,
+    });
+    console.log(`✉️ Verification code sent to ${email} (Message ID: ${info.messageId})`);
+  } catch (err) {
+    console.error(`❌ Failed to send email to ${email}:`, err.message);
+    throw new Error(`Failed to send verification email to ${email}: ${err.message}`);
   }
-
-  // Attempt sending live email if transporter is configured
-  if (transporter) {
-    try {
-      await transporter.sendMail({
-        from: EMAIL_FROM,
-        to: email,
-        subject,
-        html: htmlContent,
-        text: `Your Campus Auction verification code is: ${otp}. Valid for 10 minutes.`,
-      });
-      return { sent: true, dev: false };
-    } catch (err) {
-      console.warn(`⚠️ Failed to send live email to ${email}:`, err.message);
-      return { sent: false, dev: true };
-    }
-  }
-
-  return { sent: true, dev: true };
 };
 
 module.exports = {
   sendOtpEmail,
+  getTransporter,
 };
