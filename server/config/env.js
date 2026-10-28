@@ -30,12 +30,14 @@ const optionalVars = [
   'CLIENT_URL',
 ];
 
-// Validate required environment variables
-const missing = requiredVars.filter((key) => !process.env[key]);
-if (missing.length > 0) {
-  console.error(`❌ Missing required environment variables: ${missing.join(', ')}`);
-  console.error('   Please ensure .env exists with MONGODB_URI and JWT_SECRET defined.');
-  process.exit(1);
+// Default fallbacks for development convenience
+if (!process.env.MONGODB_URI) {
+  process.env.MONGODB_URI = 'mongodb://127.0.0.1:27017/campus-auction';
+  console.log('ℹ️ MONGODB_URI not set; defaulting to mongodb://127.0.0.1:27017/campus-auction');
+}
+if (!process.env.JWT_SECRET) {
+  process.env.JWT_SECRET = 'campus_auction_dev_secret_key_super_secure_32chars!';
+  console.log('ℹ️ JWT_SECRET not set; using development fallback secret.');
 }
 
 module.exports = {
