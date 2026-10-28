@@ -1,0 +1,16 @@
+{
+  "name": "campus-auction",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Campus Auction — Student Marketplace Platform",
+  "scripts": {
+    "install:all": "npm install --prefix server && npm install --prefix client",
+    "test:server": "npm test --prefix server",
+    "build:client": "npm run build --prefix client",
+    "start:server": "npm start --prefix server",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client"
+  },
+  "keywords": ["auction", "campus", "socket.io", "react", "mongodb"],
+  "license": "MIT"
+}
