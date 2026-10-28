@@ -2,24 +2,63 @@ import { describe, it, expect } from 'vitest';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import {
+  sendOtpSchema,
   registerSchema,
   loginSchema,
   updateProfileSchema,
 } from '../../validations/auth.validation';
 
 describe('Auth Validations', () => {
+  describe('sendOtpSchema', () => {
+    it('should validate valid email for OTP request', () => {
+      const { error, value } = sendOtpSchema.validate({ email: 'rahul@campus.edu' });
+      expect(error).toBeUndefined();
+      expect(value.email).toBe('rahul@campus.edu');
+    });
+
+    it('should reject invalid email for OTP request', () => {
+      const { error } = sendOtpSchema.validate({ email: 'invalid-email' });
+      expect(error).toBeDefined();
+    });
+  });
+
   describe('registerSchema', () => {
-    it('should validate valid student registration data', () => {
+    it('should validate valid student registration data with 6-digit OTP', () => {
       const validData = {
         name: 'Rahul Kumar',
         email: 'rahul@campus.edu',
         password: 'Password123!',
+        otp: '482910',
         studentId: 'ST12345',
         graduationYear: 2026,
       };
       const { error, value } = registerSchema.validate(validData);
       expect(error).toBeUndefined();
       expect(value.email).toBe('rahul@campus.edu');
+      expect(value.otp).toBe('482910');
+    });
+
+    it('should reject missing OTP code', () => {
+      const invalidData = {
+        name: 'Rahul Kumar',
+        email: 'rahul@campus.edu',
+        password: 'Password123!',
+      };
+      const { error } = registerSchema.validate(invalidData);
+      expect(error).toBeDefined();
+      expect(error.details[0].message).toContain('Verification code');
+    });
+
+    it('should reject OTP code that is not 6 digits', () => {
+      const invalidData = {
+        name: 'Rahul Kumar',
+        email: 'rahul@campus.edu',
+        password: 'Password123!',
+        otp: '123',
+      };
+      const { error } = registerSchema.validate(invalidData);
+      expect(error).toBeDefined();
+      expect(error.details[0].message).toContain('must be exactly 6 digits');
     });
 
     it('should reject invalid email format', () => {
@@ -27,6 +66,7 @@ describe('Auth Validations', () => {
         name: 'Rahul Kumar',
         email: 'not-an-email',
         password: 'Password123!',
+        otp: '123456',
       };
       const { error } = registerSchema.validate(invalidData);
       expect(error).toBeDefined();
@@ -38,6 +78,7 @@ describe('Auth Validations', () => {
         name: 'Rahul Kumar',
         email: 'rahul@campus.edu',
         password: '123',
+        otp: '123456',
       };
       const { error } = registerSchema.validate(invalidData);
       expect(error).toBeDefined();

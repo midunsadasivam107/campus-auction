@@ -1,5 +1,12 @@
 const Joi = require('joi');
 
+const sendOtpSchema = Joi.object({
+  email: Joi.string().trim().email().lowercase().required().messages({
+    'string.empty': 'Campus email is required',
+    'string.email': 'Please provide a valid email address (e.g. name@campus.edu)',
+  }),
+});
+
 const registerSchema = Joi.object({
   name: Joi.string().trim().min(2).max(100).required().messages({
     'string.empty': 'Full name is required',
@@ -13,6 +20,11 @@ const registerSchema = Joi.object({
   password: Joi.string().min(6).max(128).required().messages({
     'string.empty': 'Password is required',
     'string.min': 'Password must be at least 6 characters long',
+  }),
+  otp: Joi.string().trim().length(6).required().messages({
+    'any.required': 'Verification code is required',
+    'string.empty': 'Verification code is required',
+    'string.length': 'Verification code must be exactly 6 digits',
   }),
   studentId: Joi.string().trim().max(50).allow('', null).default(''),
   graduationYear: Joi.alternatives()
@@ -46,6 +58,7 @@ const updateProfileSchema = Joi.object({
 });
 
 module.exports = {
+  sendOtpSchema,
   registerSchema,
   loginSchema,
   updateProfileSchema,
