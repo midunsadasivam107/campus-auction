@@ -11,7 +11,6 @@ const {
  * Dynamically create Nodemailer transporter
  */
 const getTransporter = () => {
-  // Re-read process.env dynamically in case variables were updated without full restart
   const user = process.env.SMTP_USER || SMTP_USER;
   const pass = process.env.SMTP_PASS || SMTP_PASS;
   const host = process.env.SMTP_HOST || SMTP_HOST;
@@ -21,7 +20,6 @@ const getTransporter = () => {
     return null;
   }
 
-  // If host is explicitly specified (e.g. SendGrid, Outlook, custom mail server)
   if (host && host !== 'smtp.gmail.com') {
     return nodemailer.createTransport({
       host,
@@ -31,7 +29,6 @@ const getTransporter = () => {
     });
   }
 
-  // Default: Direct Gmail transport (requires Google App Password)
   return nodemailer.createTransport({
     service: 'gmail',
     auth: { user, pass },
@@ -39,23 +36,17 @@ const getTransporter = () => {
 };
 
 /**
- * Send OTP verification email to the student's typed email address
+ * Send OTP verification email to the student's typed email address.
+ * Uses an IF condition:
+ * - IF SMTP is configured: sends email to the typed email address.
+ * - IF SMTP is NOT configured: logs the random OTP to the terminal console so registration never fails.
  *
  * @param {string} email - Recipient student email
  * @param {string} otp - 6-digit verification code
- * @returns {Promise<void>}
+ * @returns {Promise<{ method: string, success: boolean }>}
  */
 const sendOtpEmail = async (email, otp) => {
   const transporter = getTransporter();
-
-  if (!transporter) {
-    throw new Error(
-      'Email service is not configured. Please add SMTP_USER and SMTP_PASS (e.g. your Gmail and 16-character App Password) in server/.env to send OTP emails to actual inboxes.'
-    );
-  }
-
-  const subject = `🎓 Your Campus Auction Verification Code: ${otp}`;
-  const fromAddress = process.env.EMAIL_FROM || EMAIL_FROM || `Campus Auction <${process.env.SMTP_USER || SMTP_USER}>`;
 
   const htmlContent = `
     <!DOCTYPE html>
@@ -100,19 +91,36 @@ const sendOtpEmail = async (email, otp) => {
     </html>
   `;
 
-  try {
-    const info = await transporter.sendMail({
-      from: fromAddress,
-      to: email,
-      subject,
-      html: htmlContent,
-      text: `Your Campus Auction verification code is: ${otp}. Valid for 10 minutes.`,
-    });
-    console.log(`✉️ Verification code sent to ${email} (Message ID: ${info.messageId})`);
-  } catch (err) {
-    console.error(`❌ Failed to send email to ${email}:`, err.message);
-    throw new Error(`Failed to send verification email to ${email}: ${err.message}`);
+  // Condition 1: If real SMTP credentials exist in .env, send email
+  if (transporter) {
+    try {
+      const subject = `🎓 Your Campus Auction Verification Code: ${otp}`;
+      const fromAddress = process.env.EMAIL_FROM || EMAIL_FROM || `Campus Auction <${process.env.SMTP_USER || SMTP_USER}>`;
+
+      await transporter.sendMail({
+        from: fromAddress,
+        to: email,
+        subject,
+        html: htmlContent,
+        text: `Your Campus Auction verification code is: ${otp}. Valid for 10 minutes.`,
+      });
+      console.log(`✉️ [LIVE EMAIL] OTP ${otp} successfully sent to ${email}`);
+      return { method: 'email', success: true };
+    } catch (err) {
+      console.warn(`⚠️ SMTP send failed (${err.message}). Logging to terminal.`);
+    }
   }
+
+  // Condition 2: If SMTP is not set or failed, output random OTP clearly in terminal
+  console.log('\n╔════════════════════════════════════════════════════════════════╗');
+  console.log('║           🎓 CAMPUS AUCTION — NEW USER OTP CODE                ║');
+  console.log('╠════════════════════════════════════════════════════════════════╣');
+  console.log(`║  Recipient : ${email.padEnd(47)} ║`);
+  console.log(`║  OTP Code  : ${otp.padEnd(47)} ║`);
+  console.log('║  Expires   : In 10 minutes                                     ║');
+  console.log('╚════════════════════════════════════════════════════════════════╝\n');
+
+  return { method: 'console', success: true };
 };
 
 module.exports = {
