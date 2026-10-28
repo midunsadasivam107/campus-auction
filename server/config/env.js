@@ -1,8 +1,22 @@
 const dotenv = require('dotenv');
 const path = require('path');
+const fs = require('fs');
 
-// Load .env from project root
-dotenv.config({ path: path.join(__dirname, '..', '.env') });
+// Try loading .env from:
+// 1. Current working directory
+// 2. server/ directory
+// 3. Project root directory
+const envPaths = [
+  path.join(process.cwd(), '.env'),
+  path.join(__dirname, '..', '.env'),
+  path.join(__dirname, '..', '..', '.env'),
+];
+
+for (const envPath of envPaths) {
+  if (fs.existsSync(envPath)) {
+    dotenv.config({ path: envPath });
+  }
+}
 
 const requiredVars = ['MONGODB_URI', 'JWT_SECRET'];
 const optionalVars = [
@@ -20,7 +34,7 @@ const optionalVars = [
 const missing = requiredVars.filter((key) => !process.env[key]);
 if (missing.length > 0) {
   console.error(`❌ Missing required environment variables: ${missing.join(', ')}`);
-  console.error('   Copy .env.example to .env and fill in the values.');
+  console.error('   Please ensure .env exists with MONGODB_URI and JWT_SECRET defined.');
   process.exit(1);
 }
 
