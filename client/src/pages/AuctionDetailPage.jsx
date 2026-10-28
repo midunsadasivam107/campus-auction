@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import CountdownTimer from '../components/auction/CountdownTimer';
 import BidForm from '../components/bidding/BidForm';
 import BidHistory from '../components/bidding/BidHistory';
+import QAThread from '../components/qa/QAThread';
 import socket from '../services/socket';
 import api from '../services/api';
 import toast from 'react-hot-toast';
@@ -548,12 +549,11 @@ function AuctionDetailPage() {
           )}
 
           {activeTab === 'qa' && (
-            <div>
-              <p className="text-sm text-slate-500">
-                Have a question about this item? Ask the seller directly before
-                bidding.
-              </p>
-            </div>
+            <QAThread
+              listingId={id}
+              isSeller={isSeller}
+              isAuthenticated={isAuthenticated}
+            />
           )}
         </div>
       </div>

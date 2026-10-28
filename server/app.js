@@ -35,7 +35,9 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/listings', require('./routes/listing.routes'));
 app.use('/api/listings', require('./routes/bid.routes'));
+app.use('/api/listings', require('./routes/question.routes'));
 app.use('/api/bids', require('./routes/bid.routes'));
+app.use('/api/questions', require('./routes/question.routes'));
 // app.use('/api/notifications', require('./routes/notification.routes'));
 // app.use('/api/saved-searches', require('./routes/search.routes'));
 // app.use('/api/ai', require('./routes/ai.routes'));
