@@ -10,20 +10,24 @@ const api = axios.create({
   },
 });
 
-// Response interceptor for error handling
+// Response interceptor for clear, actionable error messages
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    const message =
-      error.response?.data?.error || error.message || 'Something went wrong';
+    const data = error.response?.data;
+    let message = data?.error || error.message || 'Something went wrong';
 
-    // Auto-redirect to login on 401
-    if (error.response?.status === 401) {
-      // Will be handled by AuthContext
+    // If backend returns field-level details, extract and display them directly
+    if (data?.details && Array.isArray(data.details) && data.details.length > 0) {
+      message = data.details.map((d) => d.message).join('. ');
+    }
+
+    if (error.response && error.response.data) {
+      error.response.data.error = message;
     }
 
     return Promise.reject(error);
-  },
+  }
 );
 
 export default api;

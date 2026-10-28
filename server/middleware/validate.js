@@ -3,7 +3,7 @@ const ApiError = require('../utils/ApiError');
 
 /**
  * Creates a validation middleware for the given Joi schema.
- * Validates req.body by default; pass 'query' or 'params' to validate those instead.
+ * Formats details into clear, specific, human-readable error messages.
  *
  * @param {Joi.ObjectSchema} schema - Joi validation schema
  * @param {string} source - 'body' | 'query' | 'params'
@@ -20,7 +20,10 @@ const validate = (schema, source = 'body') => {
         field: d.path.join('.'),
         message: d.message.replace(/"/g, ''),
       }));
-      return next(ApiError.badRequest('Validation failed', details));
+
+      // Combine messages into a clean, human-readable summary
+      const readableMessage = details.map((d) => d.message).join('. ');
+      return next(ApiError.badRequest(readableMessage, details));
     }
 
     // Replace with validated + sanitized values
