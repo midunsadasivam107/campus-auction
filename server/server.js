@@ -3,6 +3,7 @@ const app = require('./app');
 const connectDB = require('./config/db');
 const { PORT, NODE_ENV } = require('./config/env');
 const { initSocket } = require('./socket');
+const { startAuctionCloser } = require('./jobs/auctionCloser');
 
 // Create HTTP server
 const server = http.createServer(app);
@@ -14,6 +15,9 @@ initSocket(server, app);
 const start = async () => {
   // Connect to MongoDB
   await connectDB();
+
+  // Start background cron jobs
+  startAuctionCloser(app);
 
   server.listen(PORT, () => {
     console.log(`\n🎓 Campus Auction Server`);
