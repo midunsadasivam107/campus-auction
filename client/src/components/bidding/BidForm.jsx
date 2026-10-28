@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import toast from 'react-hot-toast';
 import { HiOutlineCurrencyRupee, HiOutlineLightningBolt } from 'react-icons/hi';
+import AutoBidSetup from './AutoBidSetup';
 
 function BidForm({ listing, user, isAuthenticated, onBidSuccess }) {
   const isSeller =
@@ -150,6 +151,13 @@ function BidForm({ listing, user, isAuthenticated, onBidSuccess }) {
           </p>
         )}
       </form>
+
+      <AutoBidSetup
+        listingId={listing._id}
+        currentPrice={currentPrice}
+        minIncrement={minIncrement}
+        isAuthenticated={isAuthenticated}
+      />
     </div>
   );
 }

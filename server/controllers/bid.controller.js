@@ -1,6 +1,12 @@
 const Bid = require('../models/Bid');
 const asyncHandler = require('../utils/asyncHandler');
 const { placeBidAtomic, anonymizeName } = require('../services/bid.service');
+const {
+  setAutoBid,
+  processCompetingAutoBids,
+  getMyAutoBid,
+  cancelAutoBid,
+} = require('../services/autoBid.service');
 
 /**
  * @desc    Place a bid on an auction
@@ -38,6 +44,11 @@ const placeBid = asyncHandler(async (req, res) => {
       });
     }
   }
+
+  // Process any competing auto-bids in background
+  processCompetingAutoBids(listingId, bidderId, io).catch((err) =>
+    console.error('Error processing auto-bids:', err.message)
+  );
 
   res.status(201).json({
     status: 'success',
@@ -117,8 +128,76 @@ const getMyBids = asyncHandler(async (req, res) => {
   });
 });
 
+/**
+ * @desc    Set or update student's auto-bid maximum
+ * @route   POST /api/listings/:id/auto-bid
+ * @access  Private
+ */
+const setAutoBidHandler = asyncHandler(async (req, res) => {
+  const listingId = req.params.id;
+  const bidderId = req.user._id;
+  const { maxAmount } = req.body;
+
+  const io = req.app.get('io');
+  const autoBid = await setAutoBid(listingId, bidderId, Number(maxAmount), io);
+
+  res.status(200).json({
+    status: 'success',
+    message: `Automatic bidding enabled up to ₹${maxAmount}. Campus Auction will automatically bid for you!`,
+    autoBid: {
+      _id: autoBid._id,
+      maxAmount: autoBid.maxAmount,
+      isActive: autoBid.isActive,
+      createdAt: autoBid.createdAt,
+    },
+  });
+});
+
+/**
+ * @desc    Get student's own auto-bid on a listing
+ * @route   GET /api/listings/:id/auto-bid
+ * @access  Private
+ */
+const getMyAutoBidHandler = asyncHandler(async (req, res) => {
+  const listingId = req.params.id;
+  const bidderId = req.user._id;
+
+  const autoBid = await getMyAutoBid(listingId, bidderId);
+
+  res.status(200).json({
+    status: 'success',
+    autoBid: autoBid
+      ? {
+          _id: autoBid._id,
+          maxAmount: autoBid.maxAmount,
+          isActive: autoBid.isActive,
+        }
+      : null,
+  });
+});
+
+/**
+ * @desc    Cancel student's auto-bid on a listing
+ * @route   DELETE /api/listings/:id/auto-bid
+ * @access  Private
+ */
+const cancelAutoBidHandler = asyncHandler(async (req, res) => {
+  const listingId = req.params.id;
+  const bidderId = req.user._id;
+
+  await cancelAutoBid(listingId, bidderId);
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Auto-bidding cancelled for this auction',
+  });
+});
+
 module.exports = {
   placeBid,
   getBidHistory,
   getMyBids,
+  setAutoBidHandler,
+  getMyAutoBidHandler,
+  cancelAutoBidHandler,
 };

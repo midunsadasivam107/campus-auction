@@ -3,6 +3,7 @@ const Listing = require('./Listing');
 const Bid = require('./Bid');
 const Question = require('./Question');
 const Notification = require('./Notification');
+const AutoBid = require('./AutoBid');
 
 module.exports = {
   User,
@@ -10,4 +11,5 @@ module.exports = {
   Bid,
   Question,
   Notification,
+  AutoBid,
 };

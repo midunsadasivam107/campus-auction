@@ -8,6 +8,15 @@ const placeBidSchema = Joi.object({
   }),
 });
 
+const setAutoBidSchema = Joi.object({
+  maxAmount: Joi.number().min(1).required().messages({
+    'number.base': 'Maximum amount must be a number',
+    'number.min': 'Maximum amount must be at least ₹1',
+    'any.required': 'Maximum amount is required',
+  }),
+});
+
 module.exports = {
   placeBidSchema,
+  setAutoBidSchema,
 };
